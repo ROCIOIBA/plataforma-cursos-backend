@@ -137,12 +137,8 @@ Casos de error
 
 
 🌐 Deploy
-(Se completa cuando hagamos el deploy en Render.)
 
-Ejemplo:
-
-Código
-https://plataforma-cursos-backend.onrender.com
+https://plataforma-cursos-backend-4o3v.onrender.com
 
 
 

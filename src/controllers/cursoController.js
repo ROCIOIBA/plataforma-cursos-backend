@@ -1,9 +1,9 @@
-import Curso from "../models/curso.js";
+import curso from "../models/curso.js";
 
 // CREAR CURSO
 export const crearCurso = async (req, res) => {
   try {
-    const nuevoCurso = await Curso.create(req.body);
+    const nuevoCurso = await curso.create(req.body);
     res.status(201).json({
       message: "Curso creado correctamente",
       curso: nuevoCurso,

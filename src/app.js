@@ -17,8 +17,8 @@ app.use(cors({
   credentials: true
 }));
 
-// Middleware para JSON
-app.use(express.json());
+// ⭐ FIX PARA RENDER: aceptar JSON aunque venga con otro content-type
+app.use(express.json({ type: "*/*" }));
 
 // Rutas principales
 app.use("/api/usuarios", usuarioRoutes);
@@ -30,5 +30,5 @@ app.get("/", (req, res) => {
   res.json({ message: "API Plataforma de Cursos funcionando" });
 });
 
-// Export ES Modules (correcto para Render)
 export default app;
+

@@ -8,6 +8,8 @@ import {
   eliminarUsuario
 } from "../controllers/usuarioController.js";
 
+// Rutas para gestión de usuarios 
+
 const router = express.Router();
 
 router.post("/registro", registrarUsuario);

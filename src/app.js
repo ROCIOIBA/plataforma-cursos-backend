@@ -14,7 +14,9 @@ app.use(cors({
     "https://plataforma-cursos-frontend-kfm6.onrender.com"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
+  credentials: true,
+  allowHeaders: ["Content-Type", "Authorization"]
+  
 }));
 
 // FIX PARA RENDER

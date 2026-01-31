@@ -23,7 +23,7 @@ app.use(
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: false
+    credentials: true,
   })
 );
 

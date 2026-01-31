@@ -19,13 +19,14 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://plataforma-cursos-frontend.onrender.com"
+      "https://plataforma-cursos-frontend-kfm6.onrender.com"
     ],
-    credentials: false,
-    allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: false
   })
 );
+
 
 // Rutas principales
 app.use("/api/usuarios", usuarioRoutes);

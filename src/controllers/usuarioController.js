@@ -1,4 +1,3 @@
-
 import Usuario from "../models/usuario.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -8,18 +7,15 @@ export const registrarUsuario = async (req, res) => {
   try {
     const { nombre, email, password } = req.body;
 
-    // Validar campos
     if (!nombre || !email || !password) {
       return res.status(400).json({ message: "Todos los campos son obligatorios" });
     }
 
-    // Verificar si el usuario ya existe
     const existeUsuario = await Usuario.findOne({ email });
     if (existeUsuario) {
       return res.status(400).json({ message: "El email ya está registrado" });
     }
 
-    // Hashear contraseña
     const passwordHasheado = await bcrypt.hash(password, 10);
 
     const nuevoUsuario = await Usuario.create({
@@ -42,7 +38,6 @@ export const loginUsuario = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validar
     if (!email || !password) {
       return res.status(400).json({ message: "Email y contraseña son obligatorios" });
     }
@@ -58,30 +53,32 @@ export const loginUsuario = async (req, res) => {
     }
 
     // Crear token
-   // Crear token
-const token = jwt.sign(
-  { id: usuario._id, rol: usuario.rol },
-  process.env.JWT_SECRET,
-  { expiresIn: "7d" }
-);
+    const token = jwt.sign(
+      { id: usuario._id, rol: usuario.rol },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
-// Enviar cookie
- res.cookie("token", token, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "none",
-  path: "/"   // ← ESTO ES CLAVE
-});
+    // Enviar cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/"
+    });
 
-// Respuesta
-res.json({
-  message: "Login exitoso",
-  usuario,
-});
-  
-  
+    res.json({
+      message: "Login exitoso",
+      usuario,
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: "Error al iniciar sesión", error });
+  }
+};
+
 // OBTENER TODOS
- const obtenerUsuarios = async (req, res) => {
+export const obtenerUsuarios = async (req, res) => {
   try {
     const usuarios = await Usuario.find();
     res.json(usuarios);
@@ -91,10 +88,12 @@ res.json({
 };
 
 // OBTENER POR ID
- const obtenerUsuarioPorId = async (req, res) => {
+export const obtenerUsuarioPorId = async (req, res) => {
   try {
     const usuario = await Usuario.findById(req.params.id);
-    if (!usuario) return res.status(404).json({ message: "Usuario no encontrado" });
+    if (!usuario) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
 
     res.json(usuario);
   } catch (error) {
@@ -103,7 +102,7 @@ res.json({
 };
 
 // ACTUALIZAR
-const actualizarUsuario = async (req, res) => {
+export const actualizarUsuario = async (req, res) => {
   try {
     const usuarioActualizado = await Usuario.findByIdAndUpdate(
       req.params.id,
@@ -118,27 +117,11 @@ const actualizarUsuario = async (req, res) => {
 };
 
 // ELIMINAR
-
- const eliminarUsuario = async (req, res) => {
+export const eliminarUsuario = async (req, res) => {
   try {
     await Usuario.findByIdAndDelete(req.params.id);
     res.json({ message: "Usuario eliminado" });
   } catch (error) {
     res.status(500).json({ message: "Error al eliminar usuario", error });
-  }
-};
-  } catch (error) {
-    res.status(500).json({ message: "Error al iniciar sesión", error });
-  }
-  
-};
-
-// OBTENER TODOS
-export const obtenerUsuarios = async (req, res) => {
-  try {
-    const usuarios = await Usuario.find();
-    res.json(usuarios);
-  } catch (error) {
-    res.status(500).json({ message: "Error al obtener usuarios", error });
   }
 };

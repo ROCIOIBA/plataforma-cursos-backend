@@ -1,3 +1,4 @@
+
 import Usuario from "../models/usuario.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -57,24 +58,30 @@ export const loginUsuario = async (req, res) => {
     }
 
     // Crear token
-    const token = jwt.sign(
-      { id: usuario._id, rol: usuario.rol },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+   // Crear token
+const token = jwt.sign(
+  { id: usuario._id, rol: usuario.rol },
+  process.env.JWT_SECRET,
+  { expiresIn: "7d" }
+);
 
-    res.json({
-      message: "Login exitoso",
-      token,
-      usuario,
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Error al iniciar sesión", error });
-  }
-};
+// Enviar cookie
+ res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  path: "/"   // ← ESTO ES CLAVE
+});
 
+// Respuesta
+res.json({
+  message: "Login exitoso",
+  usuario,
+});
+  
+  
 // OBTENER TODOS
-export const obtenerUsuarios = async (req, res) => {
+ const obtenerUsuarios = async (req, res) => {
   try {
     const usuarios = await Usuario.find();
     res.json(usuarios);
@@ -84,7 +91,7 @@ export const obtenerUsuarios = async (req, res) => {
 };
 
 // OBTENER POR ID
-export const obtenerUsuarioPorId = async (req, res) => {
+ const obtenerUsuarioPorId = async (req, res) => {
   try {
     const usuario = await Usuario.findById(req.params.id);
     if (!usuario) return res.status(404).json({ message: "Usuario no encontrado" });
@@ -96,7 +103,7 @@ export const obtenerUsuarioPorId = async (req, res) => {
 };
 
 // ACTUALIZAR
-export const actualizarUsuario = async (req, res) => {
+const actualizarUsuario = async (req, res) => {
   try {
     const usuarioActualizado = await Usuario.findByIdAndUpdate(
       req.params.id,
@@ -111,11 +118,27 @@ export const actualizarUsuario = async (req, res) => {
 };
 
 // ELIMINAR
-export const eliminarUsuario = async (req, res) => {
+
+ const eliminarUsuario = async (req, res) => {
   try {
     await Usuario.findByIdAndDelete(req.params.id);
     res.json({ message: "Usuario eliminado" });
   } catch (error) {
     res.status(500).json({ message: "Error al eliminar usuario", error });
+  }
+};
+  } catch (error) {
+    res.status(500).json({ message: "Error al iniciar sesión", error });
+  }
+  
+};
+
+// OBTENER TODOS
+export const obtenerUsuarios = async (req, res) => {
+  try {
+    const usuarios = await Usuario.find();
+    res.json(usuarios);
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener usuarios", error });
   }
 };

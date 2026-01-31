@@ -1,26 +1,31 @@
 import express from "express";
 import cors from "cors";
-
 import usuarioRoutes from "./routes/usuarioRoutes.js";
 import cursoRoutes from "./routes/cursoRoutes.js";
 import inscripcionRoutes from "./routes/inscripcionRoutes.js";
+import conectarDB from "./config/database.js";
+import dotenv from "dotenv";
+
+dotenv.config();
+conectarDB();
 
 const app = express();
 
-// CORS para local y producción
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://plataforma-cursos-frontend-kfm6.onrender.com"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-  allowHeaders: ["Content-Type", "Authorization"]
-  
-}));
+// Middleware
+app.use(express.json());
 
-// FIX PARA RENDER
-app.use(express.json({ type: "*/*" }));
+// CORS
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://plataforma-cursos-frontend.onrender.com"
+    ],
+    credentials: false,
+    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
 // Rutas principales
 app.use("/api/usuarios", usuarioRoutes);
@@ -29,20 +34,7 @@ app.use("/api/inscripciones", inscripcionRoutes);
 
 // Ruta base
 app.get("/", (req, res) => {
-  res.json({ message: "API Plataforma de Cursos funcionando" });
-});
-
-// ⭐⭐⭐ AGREGAR ACÁ LA RUTA DE DEPURACIÓN ⭐⭐⭐
-import mongoose from "mongoose";
-
-app.get("/api/debug/db", async (req, res) => {
-  try {
-    const collections = await mongoose.connection.db.listCollections().toArray();
-    res.json(collections.map(c => c.name));
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  res.send("API funcionando correctamente");
 });
 
 export default app;
-

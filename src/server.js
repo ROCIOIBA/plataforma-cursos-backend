@@ -1,17 +1,29 @@
-import app from "./app.js";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+ 
 
+ 
+ import dotenv from "dotenv";
 dotenv.config();
 
-// Conexión a MongoDB
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB conectado"))
-  .catch((err) => console.error("Error al conectar MongoDB:", err));
+import mongoose from "mongoose";
+import app from "./app.js";
 
 const PORT = process.env.PORT || 3000;
 
+// Conexión a MongoDB
+async function connectDB() {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+
+    console.log("📌 Conectado a MongoDB");
+  } catch (error) {
+    console.error("❌ Error conectando a MongoDB:", error.message);
+    process.exit(1);
+  }
+}
+
+connectDB();
+
+// Iniciar servidor
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
+  console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });

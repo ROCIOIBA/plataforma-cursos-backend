@@ -17,7 +17,7 @@ app.use(cors({
   credentials: true
 }));
 
-// ⭐ FIX PARA RENDER: aceptar JSON aunque venga con otro content-type
+// FIX PARA RENDER
 app.use(express.json({ type: "*/*" }));
 
 // Rutas principales
@@ -28,6 +28,18 @@ app.use("/api/inscripciones", inscripcionRoutes);
 // Ruta base
 app.get("/", (req, res) => {
   res.json({ message: "API Plataforma de Cursos funcionando" });
+});
+
+// ⭐⭐⭐ AGREGAR ACÁ LA RUTA DE DEPURACIÓN ⭐⭐⭐
+import mongoose from "mongoose";
+
+app.get("/api/debug/db", async (req, res) => {
+  try {
+    const collections = await mongoose.connection.db.listCollections().toArray();
+    res.json(collections.map(c => c.name));
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 export default app;

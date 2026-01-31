@@ -23,7 +23,12 @@ const cursoSchema = new mongoose.Schema(
     profesor: {
       type: String,
       required: true,
-    }
+    }, 
+    imagen: {
+  type: String,
+  default: "https://picsum.photos/400/250?random=" + Math.floor(Math.random() * 1000)
+}
+
   },
   {
     timestamps: true,

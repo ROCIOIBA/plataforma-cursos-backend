@@ -59,12 +59,13 @@ export const loginUsuario = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    // Enviar cookie
+    // Enviar cookie CORREGIDA PARA PRODUCCIÓN
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      path: "/"
+      secure: true,        // obligatorio en Render (HTTPS)
+      sameSite: "none",    // obligatorio para permitir cookies cross-site
+      path: "/",
+      maxAge: 7 * 24 * 60 * 60 * 1000 // obligatorio para que el navegador la acepte
     });
 
     res.json({

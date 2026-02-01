@@ -5,12 +5,13 @@ import cursoRoutes from "./routes/cursoRoutes.js";
 import inscripcionRoutes from "./routes/inscripcionRoutes.js";
 import conectarDB from "./config/database.js";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 conectarDB();
 
 const app = express();
-
+app.use(cookieParser());
 // Middleware
 app.use(express.json());
 

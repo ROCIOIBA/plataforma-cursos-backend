@@ -1,10 +1,10 @@
-
 import Inscripcion from "../models/inscripcion.js";
 
+// INSCRIBIR A UN CURSO
 export const inscribirUsuario = async (req, res) => {
   try {
-    const usuarioId = req.usuarioId;
-    const { cursoId } = req.body;
+    const { cursoId } = req.params;
+    const usuarioId = req.usuarioId; // viene del authMiddleware
 
     const existe = await Inscripcion.findOne({ usuario: usuarioId, curso: cursoId });
     if (existe) {
@@ -21,10 +21,11 @@ export const inscribirUsuario = async (req, res) => {
       inscripcion: nuevaInscripcion,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error al inscribir usuario", error });
+    res.status(500).json({ message: "Error al inscribirse", error });
   }
 };
 
+// VER CURSOS DEL USUARIO
 export const verCursosDelUsuario = async (req, res) => {
   try {
     const usuarioId = req.usuarioId;

@@ -8,13 +8,13 @@ import {
   eliminarUsuario
 } from "../controllers/usuarioController.js";
 
-// Rutas para gestión de usuarios 
-
 const router = express.Router();
 
+// ⭐ IMPORTANTE: las rutas específicas primero
 router.post("/register", registrarUsuario);
 router.post("/login", loginUsuario);
 
+// Luego las rutas con parámetros
 router.get("/", obtenerUsuarios);
 router.get("/:id", obtenerUsuarioPorId);
 

@@ -18,15 +18,15 @@ app.use(express.json());
 // CORS
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://plataforma-cursos-frontend-kfm6.onrender.com"
-    ],
+    origin: process.env.NODE_ENV === "production"
+      ? "https://plataforma-cursos-frontend-kfm6.onrender.com"
+      : "http://localhost:5173",
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
   })
 );
+
 
 
 // Rutas principales

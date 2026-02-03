@@ -14,13 +14,13 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 
-// CORS CORREGIDO
+// CORS DEFINITIVO PARA PRODUCCIÓN EN RENDER
 app.use(
   cors({
-    origin:
-      process.env.NODE_ENV === "production"
-        ? "https://plataforma-cursos-frontend-kfm6.onrender.com"
-        : "http://localhost:5173",
+    origin: [
+      "https://plataforma-cursos-frontend-kfm6.onrender.com",
+      "https://plataforma-cursos-frontend.onrender.com"
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],

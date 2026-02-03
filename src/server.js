@@ -1,7 +1,4 @@
- 
-
- 
- import dotenv from "dotenv";
+import dotenv from "dotenv";
 dotenv.config();
 
 import mongoose from "mongoose";
@@ -13,7 +10,6 @@ const PORT = process.env.PORT || 3000;
 async function connectDB() {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-
     console.log("📌 Conectado a MongoDB");
   } catch (error) {
     console.error("❌ Error conectando a MongoDB:", error.message);
@@ -26,9 +22,4 @@ connectDB();
 // Iniciar servidor
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
- 
- 
-console.log("🔥 Servidor corriendo en el puerto " + PORT);
-
 });
-

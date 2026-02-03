@@ -19,7 +19,8 @@ app.use(express.json());
 app.use(
   cors({
     origin: process.env.NODE_ENV === "production"
-      ? "https://plataforma-cursos-frontend.onrender.com"
+      ? "https://plataforma-cursos-frontend-kfm6.onrender.com"
+
 
       : "http://localhost:5173",
     credentials: true,

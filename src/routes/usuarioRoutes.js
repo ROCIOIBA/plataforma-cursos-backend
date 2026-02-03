@@ -8,13 +8,29 @@ import {
   eliminarUsuario
 } from "../controllers/usuarioController.js";
 
+import { verCursosDelUsuario } from "../controllers/inscripcionController.js";
+import { authMiddleware } from "../middlewares/auth.js";
+
 const router = express.Router();
 
-// ⭐ IMPORTANTE: las rutas específicas primero
+// Rutas públicas
 router.post("/register", registrarUsuario);
 router.post("/login", loginUsuario);
 
-// Luego las rutas con parámetros
+// Rutas protegidas
+router.get("/mis-cursos", authMiddleware, verCursosDelUsuario);
+
+router.post("/logout", authMiddleware, (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/"
+  });
+  res.json({ message: "Sesión cerrada" });
+});
+
+// Rutas generales
 router.get("/", obtenerUsuarios);
 router.get("/:id", obtenerUsuarioPorId);
 
